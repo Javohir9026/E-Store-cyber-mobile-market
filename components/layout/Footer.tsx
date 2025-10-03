@@ -21,23 +21,23 @@ const Footer = () => {
           <div className="flex flex-col w-[290px] gap-2">
             <h1 className="font-bold text-4">Services</h1>
             <div className="flex flex-col text-[#CFCFCF] text-[14px] gap-[12px]">
-              <h1>Bonus program</h1>
-              <h1>Gift cards</h1>
-              <h1>Credit and payment</h1>
-              <h1>Service contracts</h1>
-              <h1>Non-cash account</h1>
-              <h1>Payment</h1>
+              <Link className="hover:text-white" href={'/'}>Bonus program</Link>
+              <Link className="hover:text-white" href={'/'}>Gift cards</Link>
+              <Link className="hover:text-white" href={'/'}>Credit and payment</Link>
+              <Link className="hover:text-white" href={'/'}>Service contracts</Link>
+              <Link className="hover:text-white" href={'/'}>Non-cash account</Link>
+              <Link className="hover:text-white" href={'/'}>Payment</Link>
             </div>
           </div>
           <div className="flex flex-col w-[290px] gap-2">
             <h1 className="font-bold text-4">Assistance to the buyer</h1>
             <div className="flex flex-col text-[#CFCFCF] text-[14px] gap-[12px]">
-              <h1>Find an order</h1>
-              <h1>Terms of delivery</h1>
-              <h1>Exchange and return of goods</h1>
-              <h1>Guarantee</h1>
-              <h1>Frequently asked questions</h1>
-              <h1>Terms of use of the site</h1>
+              <Link className="hover:text-white" href={'/'}>Find an order</Link>
+              <Link className="hover:text-white" href={'/'}>Terms of delivery</Link>
+              <Link className="hover:text-white" href={'/'}>Exchange and return of goods</Link>
+              <Link className="hover:text-white" href={'/'}>Guarantee</Link>
+              <Link className="hover:text-white" href={'/'}>Frequently asked questions</Link>
+              <Link className="hover:text-white" href={'/'}>Terms of use of the site</Link>
             </div>
           </div>
         </div>

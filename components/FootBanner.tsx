@@ -1,6 +1,7 @@
 import React from "react";
 import BannerIMg from "@/assets/image/FootBanner.png";
 import Image from "next/image";
+import Link from "next/link";
 
 const FootBanner = () => {
   const Banner = [
@@ -36,7 +37,7 @@ const FootBanner = () => {
                 </span>
               </h1>
               <p className="text-[#787878] mt-3">{bnr.description}</p>
-                <button className="px-[56px] py-4 text-white rounded-[9px] border border-white mt-10 hover:border-black hover:bg-black">Shop Now</button>
+                <Link href={'/ProductDetails/iphone14pro'} className="px-[56px] py-4 text-white rounded-[9px] border border-white mt-10 hover:border-black hover:bg-black">Shop Now</Link>
             </div>
           </div>
         </div>

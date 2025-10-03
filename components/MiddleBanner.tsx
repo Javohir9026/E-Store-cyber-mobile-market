@@ -58,7 +58,7 @@ const MiddleBanner = () => {
           </h1>
         </div>
         <div className="px-[32px] pb-[56px]">
-          <button className="px-[56px] py-[16px] border rounded-[6px] text-black hover:bg-black hover:text-white mt-4">
+          <button className="px-[56px] py-[16px] border-1 border-black rounded-[6px] text-black hover:bg-black hover:text-white mt-4">
             Shop Now
           </button>
         </div>
@@ -80,57 +80,57 @@ const MiddleBanner = () => {
             </h1>
           </div>
           <div className="px-[32px] pb-[56px]">
-            <button className="px-[56px] py-[16px] border rounded-[6px] text-black hover:bg-black hover:text-white mt-4">
+            <button className="px-[56px] py-[16px] border-1 border-black rounded-[6px] text-black hover:bg-black hover:text-white mt-4">
               Shop Now
             </button>
           </div>
         </div>
       </div>
       <div className="w-full bg-[#EAEAEA]">
-      <div className="w-full">
-        <div className="h-[400px]">
-          <Image
-            src={Banners[2].img}
-            height={400}
-            width={400}
-            alt={Banners[2].title}
-          />
+        <div className="w-full">
+          <div className="h-[400px]">
+            <Image
+              src={Banners[2].img}
+              height={400}
+              width={400}
+              alt={Banners[2].title}
+            />
+          </div>
+          <div className="px-[32px] flex flex-col gap-4 ">
+            <h1 className="text-[33px]">{Banners[2].title}</h1>
+            <h1 className="text-[14px] text-[#909090]">
+              {Banners[2].description}
+            </h1>
+          </div>
+          <div className="px-[32px] pb-[56px]">
+            <button className="px-[56px] py-[16px]  rounded-[6px] border-1 border-black text-black hover:bg-black hover:text-white mt-4">
+              Shop Now
+            </button>
+          </div>
         </div>
-        <div className="px-[32px] flex flex-col gap-4 ">
-          <h1 className="text-[33px]">{Banners[2].title}</h1>
-          <h1 className="text-[14px] text-[#909090]">
-            {Banners[2].description}
-          </h1>
-        </div>
-        <div className="px-[32px] pb-[56px]">
-          <button className="px-[56px] py-[16px] border rounded-[6px] text-black hover:bg-black hover:text-white mt-4">
-            Shop Now
-          </button>
-        </div>
-      </div>
       </div>
       <div className="w-full bg-[#2C2C2C]">
-      <div className="w-full">
-        <div className="h-[400px]">
-          <Image
-            src={Banners[3].img}
-            height={400}
-            width={400}
-            alt={Banners[3].title}
-          />
+        <div className="w-full">
+          <div className="h-[400px]">
+            <Image
+              src={Banners[3].img}
+              height={400}
+              width={400}
+              alt={Banners[3].title}
+            />
+          </div>
+          <div className="px-[32px] flex flex-col gap-4 ">
+            <h1 className="text-[33px] text-white">{Banners[3].title}</h1>
+            <h1 className="text-[14px] text-[#909090]">
+              {Banners[3].description}
+            </h1>
+          </div>
+          <div className="px-[32px] pb-[56px]">
+            <button className="px-[56px] py-[16px] border rounded-[6px] rounded-white text-white hover:bg-black hover:text-white mt-4 hover:border-black">
+              Shop Now
+            </button>
+          </div>
         </div>
-        <div className="px-[32px] flex flex-col gap-4 ">
-          <h1 className="text-[33px] text-white">{Banners[3].title}</h1>
-          <h1 className="text-[14px] text-[#909090]">
-            {Banners[3].description}
-          </h1>
-        </div>
-        <div className="px-[32px] pb-[56px]">
-          <button className="px-[56px] py-[16px] border rounded-[6px] rounded-white text-white hover:bg-black hover:text-white mt-4 hover:border-black">
-            Shop Now
-          </button>
-        </div>
-      </div>
       </div>
     </div>
   );

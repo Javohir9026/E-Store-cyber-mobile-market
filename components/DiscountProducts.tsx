@@ -2,6 +2,7 @@
 import axios from "axios";
 import { Heart } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import React, { useEffect, useState } from "react";
 
 interface ProductType {
@@ -59,13 +60,13 @@ const DiscountProducts = () => {
                 {product.title}
               </h2>
               <p className="text-[24px] font-bold">${Math.round(product.price)}</p>
-              <button
+              <Link href={`/ProductDetails/${product.id}`}
                 className="bg-black text-white border border-transparent 
                    hover:bg-white hover:border-black hover:text-black 
                    px-[64px] py-3 rounded-[8px] cursor-pointer"
               >
                 Buy Now
-              </button>
+              </Link>
             </div>
           </div>
         ))}

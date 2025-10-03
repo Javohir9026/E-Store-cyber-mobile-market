@@ -1,6 +1,7 @@
 "use client";
 import { Heart } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useEffect, useState } from "react";
 
 type Product = {
@@ -56,9 +57,9 @@ export default function PopularProducts() {
   return (
     <div className="container">
       <div className="flex mt-[56px] mb-[32px] gap-[32px] font-semibold">
-        <button onClick={()=> setFilter('arrival')} className={filter === 'arrival' ? 'text-black border-b-2 border-black' : 'text-[#8B8B8B]'}>New Arrival</button>
-        <button onClick={()=> setFilter('bestseller')} className={filter === 'bestseller' ? 'text-black border-b-2 border-black' : 'text-[#8B8B8B]'}>Bestseller</button>
-        <button onClick={()=> setFilter('featured')} className={filter === 'featured' ? 'text-black border-b-2 border-black' : 'text-[#8B8B8B]'}>Featured Products</button>
+        <button onClick={()=> setFilter('arrival')} className={filter === 'arrival' ? 'text-black border-b-2  border-black' : 'text-[#8B8B8B] cursor-pointer'}>New Arrival</button>
+        <button onClick={()=> setFilter('bestseller')} className={filter === 'bestseller' ? 'text-black border-b-2 border-black' : 'text-[#8B8B8B] cursor-pointer'}>Bestseller</button>
+        <button onClick={()=> setFilter('featured')} className={filter === 'featured' ? 'text-black border-b-2 border-black' : 'text-[#8B8B8B] cursor-pointer'}>Featured Products</button>
       </div>
       <div className="grid grid-cols-4 gap-4 justify-between px-4 py-6">
         {products.map((p) => (
@@ -82,13 +83,13 @@ export default function PopularProducts() {
                 {p.title}
               </h2>
               <p className="text-[24px] font-bold">${Math.round(p.price)}</p>
-              <button
+              <Link href={`/ProductDetails/${p.id}`}
                 className="bg-black text-white border border-transparent 
                    hover:bg-white hover:border-black hover:text-black 
                    px-[64px] py-3 rounded-[8px] cursor-pointer"
               >
                 Buy Now
-              </button>
+              </Link>
             </div>
           </div>
         ))}
