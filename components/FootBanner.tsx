@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 
 const FootBanner = () => {
+  
   const Banner = [
     {
       id: 1,

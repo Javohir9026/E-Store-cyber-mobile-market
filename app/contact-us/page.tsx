@@ -22,14 +22,12 @@ export default function ContactUs() {
             <p className="text-gray-600 mt-2">javohiramanbayev84@gmail.com</p>
           </div>
 
-          {/* Manzil */}
           <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition">
             <h3 className="text-lg font-semibold text-gray-800">Manzil</h3>
             <p className="text-gray-600 mt-2">Xorazm, Urganch, Najot Ta'lim</p>
           </div>
         </div>
 
-        {/* Kontakt form */}
         <form className="mt-12 bg-white shadow-md p-8 rounded-xl max-w-2xl mx-auto">
           <div className="grid md:grid-cols-2 gap-6">
             <input
@@ -49,7 +47,7 @@ export default function ContactUs() {
           ></textarea>
           <button
             type="submit"
-            className="mt-6 w-full bg-blue-600 text-white font-semibold py-3 rounded-lg hover:bg-blue-700 transition"
+            className="mt-6 w-full bg-white text-black border font-semibold py-3 rounded-lg hover:bg-black hover:text-white transition"
           >
             Xabar yuborish
           </button>

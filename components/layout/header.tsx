@@ -2,12 +2,15 @@
 import { Heart, Search, ShoppingCart, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation"; 
+import { usePathname } from "next/navigation";
 import logo from "@/assets/icon/Logo (1).svg";
+import { useEffect, useState } from "react";
+import { getFromLocalStorage } from "@/utils/LocalStorage";
+import SearchModal from "../SearchModal";
 
 const Header = () => {
-  const pathname = usePathname(); 
-
+  const pathname = usePathname();
+  const [favlengt, setFavLength] = useState(0);
   const actions = [
     { title: "Home", link: "/" },
     { title: "About", link: "/about" },
@@ -15,33 +18,28 @@ const Header = () => {
     { title: "Blog", link: "/blog" },
   ];
 
-  const actionIcon = [
-    { icon: <Heart />, href: "/favorites" },
-    { icon: <ShoppingCart />, href: "/cart" },
-    { icon: <User />, href: "/profile" },
-  ];
+  useEffect(() => {
+    const fav = getFromLocalStorage("favorites");
+    if (fav && Array.isArray(fav)) {
+      setFavLength(fav.length);
+    }
+  }, []);
 
   return (
     <div className="border border-[#B5B5B5] py-[32px] px-[160px] flex gap-[50px] justify-between items-center">
       <Link href={"/"}>
-        <Image src={logo} height={30} width={85} alt="logo" />
+        <Image
+          src={logo}
+          height={30}
+          width={85}
+          alt="logo"
+          className="object-contain"
+        />
       </Link>
 
-      <div className="flex w-[372px] h-[56px] items-center bg-[#F5F5F5] rounded-md">
-        <Search
-          width={24}
-          height={24}
-          className="ml-[16px] my-[16px] stroke-gray-400"
-        />
-        <input
-          placeholder="search"
-          className="ml-2 w-full text-[14px] h-full outline-none"
-          maxLength={35}
-          type="text"
-        />
-      </div>
+      <SearchModal/>
 
-      <div className="flex gap-[52px] text-[16px]">
+      <div className="flex  text-[16px] lg:gap-[42px] md:gap-3">
         {actions.map((action) => {
           const isActive = pathname === action.link;
           return (
@@ -61,11 +59,26 @@ const Header = () => {
       </div>
 
       <div className="flex gap-6">
-        {actionIcon.map((act) => (
-          <Link key={act.href} href={act.href}>
-            {act.icon}
+        <div className="relative">
+          <Link href="/favorites">
+            <Heart />
+            {favlengt > 0 && (
+              <span
+                className="absolute -top-2 -right-2 bg-red-500 text-white text-xs 
+                   w-5 h-5 rounded-full flex items-center justify-center"
+              >
+                {favlengt}
+              </span>
+            )}
           </Link>
-        ))}
+        </div>
+
+        <Link href={"/cart"}>
+          <ShoppingCart />
+        </Link>
+        <Link href={"/myAccount"}>
+          <User />
+        </Link>
       </div>
     </div>
   );

@@ -35,7 +35,7 @@ const page = () => {
       tags: ["Phone", "MobilePhone", "Apple"],
       category: "MobilePhones",
       rating: 5,
-      stock: 25,
+      stock: 0,
       brand: "apple",
       thumbnail: AppleMain,
       delivery: "1-2",

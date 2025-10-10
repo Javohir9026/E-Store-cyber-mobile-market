@@ -4,6 +4,8 @@ import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import { BadgeCheck, BadgeMinus, Star, Store, Truck } from "lucide-react";
 import { usePathname } from "next/navigation";
+import { getFromLocalStorage, saveToLocalStorage } from "@/utils/LocalStorage";
+import { toast } from "react-toastify";
 
 interface ProductType {
   id: number;
@@ -56,7 +58,32 @@ const ProductPage: React.FC<PageProps> = ({ params }) => {
     };
 
     fetchProduct();
-  }, [id]); 
+  }, [id]);
+  const [favorites, setFavorites] = useState<any[]>([]);
+  useEffect(() => {
+    const stored = getFromLocalStorage("favorites");
+    if (stored) setFavorites(stored);
+  }, []);
+
+  const handleFavorite = (product: any) => {
+    const exists = favorites.some((f) => f.id === product.id);
+    let updated;
+
+    if (exists) {
+      updated = favorites.filter((f: any) => f.id !== product.id);
+      saveToLocalStorage("favorites", updated);
+      toast.info("Product removed from Wishlist", { autoClose: 1500 });
+    } else {
+      updated = [...favorites, product];
+      saveToLocalStorage("favorites", updated);
+      toast.success("Product successfully added", { autoClose: 1500 });
+    }
+
+    setFavorites(updated);
+    saveToLocalStorage("favorites", updated);
+  };
+
+  const isFavorite = (id: number) => favorites.some((f) => f.id === id);
 
   if (!product) return <div>Loading...</div>;
 
@@ -66,7 +93,6 @@ const ProductPage: React.FC<PageProps> = ({ params }) => {
   return (
     <div className="">
       <div className="flex gap-[48px] px-[160px] py-[112px] justify-between">
-        {/* Left images */}
         <div className="flex gap-[30px] h-[516px] w-[536px]">
           {product.images.length > 1 ? (
             <>
@@ -136,9 +162,7 @@ const ProductPage: React.FC<PageProps> = ({ params }) => {
                     onClick={() => setSelectedColor(c)}
                     key={i}
                     className={`rounded-full w-[30px] h-[30px] p-[2px] ${
-                      selectedColor === c
-                        ? "border-2"
-                        : ""
+                      selectedColor === c ? "border-2" : ""
                     }`}
                   >
                     <div
@@ -185,7 +209,12 @@ const ProductPage: React.FC<PageProps> = ({ params }) => {
           </div>
 
           <div className="mt-6 flex justify-between items-center">
-            <button className="px-[72px] w-[260px] py-4 border-2 cursor-pointer rounded-md">
+            <button
+              className="px-[72px] w-[260px] py-4 border-2 cursor-pointer rounded-md"
+              onClick={() => {
+                handleFavorite(product);
+              }}
+            >
               Add to Wishlist
             </button>
             <button className="px-[72px] w-[260px] py-[17px] cursor-pointer bg-black text-white rounded-md">

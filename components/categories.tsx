@@ -41,7 +41,6 @@ const CategoryCarousel = () => {
         </div>
       </div>
 
-      {/* Cards */}
       <div className="embla__viewport" ref={emblaRef}>
         <div className="embla__container">
           {category.map((cat, i) => (

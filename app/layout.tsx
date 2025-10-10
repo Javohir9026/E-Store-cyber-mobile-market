@@ -1,6 +1,7 @@
 import Header from "@/components/layout/header";
 import "./globals.css";
 import Footer from "@/components/layout/Footer";
+import { ToastContainer, toast } from "react-toastify";
 
 export default function RootLayout({
   children,
@@ -13,8 +14,12 @@ export default function RootLayout({
         <header>
           <Header />
         </header>
-        <main>{children}</main>
-        <footer><Footer/></footer>
+        <main>{children}
+          <ToastContainer/>
+        </main>
+        <footer>
+          <Footer />
+        </footer>
       </body>
     </html>
   );

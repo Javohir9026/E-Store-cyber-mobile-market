@@ -15,8 +15,9 @@ import {
   DropdownMenuRadioItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { getFromLocalStorage, saveToLocalStorage } from "@/utils/LocalStorage";
 import axios from "axios";
-import { Heart } from "lucide-react";
+import { Heart, Search } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -121,6 +122,9 @@ const Page = () => {
   const title = pathname.split("/").pop();
   const [products, setProducts] = useState<Product[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [favorites, setFavorites] = useState<any[]>([]);
+  const [searchTerms, setSearchTerms] = useState<Record<string, string>>({});
+
   const productsPerPage = 16;
 
   const fetchData = async () => {
@@ -155,48 +159,117 @@ const Page = () => {
       sorted = [...products].sort((a, b) => a.price - b.price);
     }
 
-    setProducts(sorted); // 👈 bu joyda UI yangilanadi
+    setProducts(sorted);
   }, [filter]);
+
+  useEffect(() => {
+    const stored = getFromLocalStorage("favorites");
+    if (stored) setFavorites(stored);
+  }, []);
+
+  const handleFavorite = (product: any) => {
+    const exists = favorites.some((f) => f.id === product.id);
+    let updated;
+
+    if (exists) {
+      updated = favorites.filter((f) => f.id !== product.id);
+    } else {
+      updated = [...favorites, product];
+    }
+
+    setFavorites(updated);
+    saveToLocalStorage("favorites", updated);
+  };
+
+  const isFavorite = (id: number) => favorites.some((f) => f.id === id);
 
   const indexOfLast = currentPage * productsPerPage;
   const indexOfFirst = indexOfLast - productsPerPage;
   const currentProducts = products.slice(indexOfFirst, indexOfLast);
   const totalPages = Math.ceil(products.length / productsPerPage);
 
+  const handleSearch = (sectionTitle: string, value: string) => {
+    setSearchTerms((prev) => ({
+      ...prev,
+      [sectionTitle]: value.toLowerCase(),
+    }));
+  };
+  const [buttonClick, setButtonClick] = useState(false);
+
+  const handleCart = (product: any) => {
+    setButtonClick(!buttonClick);
+    const cart = JSON.parse(localStorage.getItem("cart") || "[]");
+    const exists = cart.find((item: any) => item.id === product.id);
+    let updatedCart;
+    if (exists) {
+      updatedCart = cart.filter((item: any) => item.id !== product.id);
+    } else {
+      updatedCart = [...cart, product];
+    }
+    localStorage.setItem("cart", JSON.stringify(updatedCart));
+  };
   return (
     <div className="container flex gap-[32px]">
-      <div className="w-[280px] border rounded-md p-4">
+      <div className="w-[280px] rounded-md p-4">
         <Accordion type="multiple" className="w-full">
-          {filters.map((section, i) => (
-            <AccordionItem key={i} value={`item-${i}`}>
-              <AccordionTrigger className="text-lg font-semibold">
-                {section.title}
-              </AccordionTrigger>
-              <AccordionContent>
-                <div className="flex flex-col gap-3">
-                  {section.filter.map((f, idx) => (
-                    <label
-                      key={idx}
-                      htmlFor={`${section.title}-${idx}`}
-                      className="flex items-center gap-2 cursor-pointer"
-                    >
-                      <Checkbox id={`${section.title}-${idx}`} />
-                      <span className="text-sm font-semibold">{f}</span>
-                    </label>
-                  ))}
-                </div>
-              </AccordionContent>
-            </AccordionItem>
-          ))}
+          {filters.map((section, i) => {
+            const searchValue = searchTerms[section.title] || "";
+            const filteredItems = section.filter.filter((f) =>
+              f.toLowerCase().includes(searchValue)
+            );
+
+            return (
+              <AccordionItem key={i} value={`item-${i}`}>
+                <AccordionTrigger className="text-lg font-semibold">
+                  {section.title}
+                </AccordionTrigger>
+                <AccordionContent>
+                  <div className="flex px-[11px] rounded-md bg-[#F5F5F5] gap-2 py-2 mb-4 items-center">
+                    <Search className="stroke-gray-400" />
+                    <input
+                      type="text"
+                      className="w-full focus:outline-none font-semibold"
+                      maxLength={20}
+                      placeholder="Search"
+                      value={searchValue}
+                      onChange={(e) =>
+                        handleSearch(section.title, e.target.value)
+                      }
+                    />
+                  </div>
+
+                  <div className="flex flex-col gap-3">
+                    {filteredItems.map((f, idx) => (
+                      <label
+                        key={idx}
+                        htmlFor={`${section.title}-${idx}`}
+                        className="flex items-center gap-2 cursor-pointer"
+                      >
+                        <Checkbox id={`${section.title}-${idx}`} />
+                        <span className="text-sm font-semibold">{f}</span>
+                      </label>
+                    ))}
+
+                    {filteredItems.length === 0 && (
+                      <p className="text-sm text-gray-500 italic">
+                        No results found
+                      </p>
+                    )}
+                  </div>
+                </AccordionContent>
+              </AccordionItem>
+            );
+          })}
         </Accordion>
       </div>
 
-      <div className="flex-1 border rounded-md p-4">
+      <div className="flex-1 rounded-md p-4">
         <div className="flex justify-between">
           <h2 className="text-xl text-[#6C6C6C] mb-4">
             Selected Products:{" "}
             <span className="font-semibold text-black">{products.length}</span>
           </h2>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild className="w-[220px]">
               <Button variant="outline">By {filter}</Button>
@@ -229,8 +302,16 @@ const Page = () => {
               className="bg-[#F6F6F6] p-4 rounded-[9px] shadow flex flex-col justify-between"
             >
               <div className="flex justify-end">
-                <button onClick={() => {}} className="cursor-pointer">
-                  <Heart height={24} width={24} />
+                <button
+                  onClick={() => handleFavorite(p)}
+                  className="cursor-pointer"
+                >
+                  <Heart
+                    height={35}
+                    width={35}
+                    color={isFavorite(p.id) ? "red" : "black"}
+                    fill={isFavorite(p.id) ? "red" : "transparent"}
+                  />
                 </button>
               </div>
 
@@ -249,14 +330,14 @@ const Page = () => {
                   {p.title}
                 </h2>
                 <p className="text-xl font-bold">${Math.round(p.price)}</p>
-                <Link
-                  href={`/ProductDetails/${p.id}`}
+                <button
+                  onClick={() => handleCart(p)}
                   className="bg-black text-white border border-transparent 
-             hover:bg-white hover:border-black hover:text-black 
-             px-6 py-2 rounded-[8px] cursor-pointer text-sm"
+        hover:bg-white hover:border-black hover:text-black 
+        px-[64px] py-3 rounded-[8px] cursor-pointer"
                 >
-                  Buy Now
-                </Link>
+                  {buttonClick ? "Remove from cart" : "Add to Cart"}
+                </button>
               </div>
             </div>
           ))}
