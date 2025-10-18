@@ -1,16 +1,27 @@
 "use client";
 import { useEffect, useState } from "react";
-import { getFromLocalStorage, saveToLocalStorage } from "@/utils/LocalStorage";
+import { getFromLocalStorage, saveToLocalStorage } from "../../utils/LocalStorage";
 import Image from "next/image";
 import Link from "next/link";
 import { Heart } from "lucide-react";
 
+// 1. Product interfeysini aniqla
+interface Product {
+  id: number;
+  title: string;
+  price: number;
+  thumbnail: string;
+}
+
 export default function FavoritesPage() {
-  const [favorites, setFavorites] = useState<any[]>([]);
+  // 2. Aniq turdagi holatni belgilash
+  const [favorites, setFavorites] = useState<Product[]>([]);
 
   useEffect(() => {
     const stored = getFromLocalStorage("favorites");
-    if (stored) setFavorites(stored);
+    if (stored && Array.isArray(stored)) {
+      setFavorites(stored);
+    }
   }, []);
 
   if (favorites.length === 0)
@@ -20,9 +31,9 @@ export default function FavoritesPage() {
       </p>
     );
 
-  const handleFavorite = (product: any) => {
+  const handleFavorite = (product: Product) => {
     const exists = favorites.some((f) => f.id === product.id);
-    let updated;
+    let updated: Product[];
 
     if (exists) {
       updated = favorites.filter((f) => f.id !== product.id);
@@ -35,7 +46,7 @@ export default function FavoritesPage() {
   };
 
   const clearAllFavorites = () => {
-    setFavorites([]); 
+    setFavorites([]);
     saveToLocalStorage("favorites", []);
   };
 

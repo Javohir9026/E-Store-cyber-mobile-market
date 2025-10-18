@@ -1,8 +1,9 @@
 "use client";
-import { AlertDialog } from "@/components/ui/alert-dialog";
-import { Button } from "@/components/ui/button";
-import { Calendar } from "@/components/ui/calendar";
-import { Label } from "@/components/ui/label";
+
+import { AlertDialog } from "../../components/ui/alert-dialog";
+import { Button } from "../../components/ui/button";
+import { Calendar } from "../../components/ui/calendar";
+import { Label } from "../../components/ui/label";
 import {
   AlertDialogAction,
   AlertDialogCancel,
@@ -12,17 +13,16 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import CardImage from "@/assets/image/card.png";
+} from "../../components/ui/alert-dialog";
+import CardImage from "../../assets/image/card.png";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from "@/components/ui/popover";
-import { RadioGroupItem, RadioGroup } from "@/components/ui/radio-group";
+} from "../../components/ui/popover";
+import { RadioGroupItem, RadioGroup } from "../../components/ui/radio-group";
 import {
   ChevronDownIcon,
-  CirclePlus,
   HandCoins,
   MapPin,
   Pen,
@@ -30,105 +30,42 @@ import {
   Truck,
   X,
 } from "lucide-react";
-import React, { useState } from "react";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import Iphone14Pro from "@/assets/image/apple14Details/apple14proDeatilmain.png";
-import Mackbook from "@/assets/image/MackboockAir.png";
-import Airpods from "@/assets/image/AirPodsMax.png";
+import React, { useEffect, useState } from "react";
+import { ScrollArea } from "../../components/ui/scroll-area";
 import Image from "next/image";
-import { se } from "date-fns/locale";
-import { Checkbox } from "@/components/ui/checkbox";
+import { Checkbox } from "../../components/ui/checkbox";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/components/ui/dialog";
+} from "../../components/ui/dialog";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSeparator,
   InputOTPSlot,
-} from "@/components/ui/input-otp";
-import Link from "next/link";
+} from "../../components/ui/input-otp";
 import { useRouter } from "next/navigation";
+import { getFromLocalStorage } from "utils/LocalStorage";
+
+interface CartItem {
+  title: string;
+  price: number;
+  quantity: number;
+  thumbnail: string;
+}
+
 const Page = () => {
   const [step, setStep] = useState<"step1" | "step2" | "step3">("step1");
-  const tags = [
-    {
-      title: "Apple IPhone 14 Pro Max 128 Gb",
-      price: 1000,
-      img: Iphone14Pro,
-    },
-    {
-      title: "AirPods Max Silver",
-      price: 500,
-      img: Mackbook,
-    },
-    {
-      title: "Apple IPhone 14 Pro Max 128 Gb",
-      price: 1000,
-      img: Airpods,
-    },
-    {
-      title: "Apple IPhone 14 Pro Max 128 Gb",
-      price: 1000,
-      img: Iphone14Pro,
-    },
-    {
-      title: "AirPods Max Silver",
-      price: 500,
-      img: Mackbook,
-    },
-    {
-      title: "Apple IPhone 14 Pro Max 128 Gb",
-      price: 1000,
-      img: Airpods,
-    },
-    {
-      title: "Apple IPhone 14 Pro Max 128 Gb",
-      price: 1000,
-      img: Iphone14Pro,
-    },
-    {
-      title: "AirPods Max Silver",
-      price: 500,
-      img: Mackbook,
-    },
-    {
-      title: "Apple IPhone 14 Pro Max 128 Gb",
-      price: 1000,
-      img: Airpods,
-    },
-  ];
-  const address = [
-    {
-      id: 1,
-      title: "2118 Thornridge",
-      type: "HOME",
-      address: "2118 Thornridge Cir. Syracuse, Connecticut 35624",
-      phone: "(209) 555-0104",
-      isDefault: true,
-    },
-    {
-      id: 2,
-      title: "Headoffice",
-      type: "OFFICE",
-      address: "2715 Ash Dr. San Jose, South Dakota 83475",
-      phone: "(704) 555-0127",
-      isDefault: false,
-    },
-  ];
-
-  const SMS = 123456;
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
   const router = useRouter();
 
   const handleConfirm = () => {
     if (otp.length < 6) {
-      setError("Please enter the full 6-digit code.");
+      setError("Please enter the full 6‑digit code.");
       return;
     }
 
@@ -138,13 +75,15 @@ const Page = () => {
       router.push("/status/rejected");
     }
   };
+
   const PaymentMethods = [
     { id: 1, title: "Credit Card", type: "credit_card", isDefault: true },
     { id: 2, title: "PayPal", type: "paypal", isDefault: false },
     { id: 3, title: "PayPal Credit", type: "paypal_credit", isDefault: false },
   ];
-  const defaultPaymentMehtod = PaymentMethods.find((a) => a.isDefault)?.type;
-  const [selectedPMethod, setSelectedPMethod] = useState(defaultPaymentMehtod);
+  const defaultPaymentMethod = PaymentMethods.find((a) => a.isDefault)?.type || "";
+  const [selectedPMethod, setSelectedPMethod] = useState<string>(defaultPaymentMethod);
+
   const shippingOptionsMock = [
     {
       id: "1",
@@ -174,18 +113,36 @@ const Page = () => {
       isDefault: false,
     },
   ];
+
+  // Address mock
+  const address = [
+    {
+      id: 1,
+      title: "Home",
+      type: "Home",
+      address: "Tashkent, Chilonzor, 5",
+      phone: "+998 90 123 45 67",
+      isDefault: true,
+    },
+    {
+      id: 2,
+      title: "Office",
+      type: "Office",
+      address: "Tashkent, Yunusobod, 10",
+      phone: "+998 90 987 65 43",
+      isDefault: false,
+    },
+  ];
+
   const [open, setOpen] = useState(false);
   const [date, setDate] = useState<Date | undefined>(undefined);
-  const defaultAddress = address.find((a) => a.isDefault)?.id.toString();
-  const defaultShippingMethod = shippingOptionsMock.find(
-    (a) => a.isDefault
-  )?.id;
-  const [selectedAdress, setSelectedAddress] = useState<any>(
-    Number(defaultAddress)
-  );
-  const [selectedShip, setSelectedShip] = useState<any>(
-    Number(defaultShippingMethod)
-  );
+
+  const defaultAddress = address.find((a) => a.isDefault)?.id.toString() || "1";
+  const defaultShippingMethod = shippingOptionsMock.find((a) => a.isDefault)?.id || "1";
+
+  const [selectedAddress, setSelectedAddress] = useState<number>(parseInt(defaultAddress, 10));
+  const [selectedShip, setSelectedShip] = useState<number>(parseInt(defaultShippingMethod, 10));
+
   const [cardNumber, setCardNumber] = useState("");
   const [expDate, setExpDate] = useState("");
   const [cvv, setCvv] = useState("");
@@ -210,16 +167,21 @@ const Page = () => {
     setCvv(value);
   };
 
+  const [items, setItems] = useState<CartItem[]>([]);
+  useEffect(() => {
+    const stored = getFromLocalStorage("cart");
+    if (stored && Array.isArray(stored)) {
+      setItems(stored as CartItem[]);
+    }
+  }, []);
+
+  const total = items.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
   return (
     <div className="container">
       <div className="flex justify-between px-[160px] py-[72px]">
-        <div
-          className={
-            step === "step1"
-              ? "flex items-center gap-1"
-              : "flex items-center gap-1 opacity-40"
-          }
-        >
+        {/* Step indicators */}
+        <div className={step === "step1" ? "flex items-center gap-1" : "flex items-center gap-1 opacity-40"}>
           <div className="w-[30px] h-[30px] rounded-full bg-black flex items-center justify-center">
             <MapPin className="stroke-white" />
           </div>
@@ -228,13 +190,7 @@ const Page = () => {
             <h1 className="text-[19px]">Address</h1>
           </div>
         </div>
-        <div
-          className={
-            step === "step2"
-              ? "flex items-center gap-1"
-              : "flex items-center gap-1 opacity-40"
-          }
-        >
+        <div className={step === "step2" ? "flex items-center gap-1" : "flex items-center gap-1 opacity-40"}>
           <div className="w-[30px] h-[30px] rounded-full bg-black flex items-center justify-center">
             <Truck className="stroke-white" />
           </div>
@@ -243,13 +199,7 @@ const Page = () => {
             <h1 className="text-[19px]">Shipping</h1>
           </div>
         </div>
-        <div
-          className={
-            step === "step3"
-              ? "flex items-center gap-1"
-              : "flex items-center gap-1 opacity-40"
-          }
-        >
+        <div className={step === "step3" ? "flex items-center gap-1" : "flex items-center gap-1 opacity-40"}>
           <div className="w-[30px] h-[30px] rounded-full bg-black flex items-center justify-center">
             <HandCoins className="stroke-white" />
           </div>
@@ -268,26 +218,26 @@ const Page = () => {
             <RadioGroup
               defaultValue={defaultAddress}
               className="flex flex-col gap-[24px] w-full"
-              onValueChange={(val) => setSelectedAddress(val)}
+              onValueChange={(val) => {
+                const parsed = parseInt(val, 10);
+                if (!isNaN(parsed)) {
+                  setSelectedAddress(parsed);
+                }
+              }}
             >
               {address.map((adr) => (
                 <div
                   key={adr.id}
                   className="bg-[#F6F6F6] w-full p-[24px] flex items-start gap-2 rounded-[7px]"
                 >
-                  <RadioGroupItem
-                    value={adr.id.toString()}
-                    id={`option-${adr.id}`}
-                  />
+                  <RadioGroupItem value={adr.id.toString()} id={`option-${adr.id}`} />
                   <Label
                     htmlFor={`option-${adr.id}`}
                     className="flex justify-between items-center w-full cursor-pointer"
                   >
                     <div className="flex flex-col gap-3">
                       <div className="flex gap-[12px] items-center">
-                        <h1 className="text-[18px] font-semibold">
-                          {adr.title}
-                        </h1>
+                        <h1 className="text-[18px] font-semibold">{adr.title}</h1>
                         <div className="px-2 py-[2px] bg-black text-white rounded-md text-[12px] uppercase">
                           {adr.type}
                         </div>
@@ -305,6 +255,7 @@ const Page = () => {
                 </div>
               ))}
             </RadioGroup>
+
             {address.length < 3 && (
               <div className="flex justify-center">
                 <AlertDialog>
@@ -316,11 +267,9 @@ const Page = () => {
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        Enter Your New Address
-                      </AlertDialogTitle>
+                      <AlertDialogTitle>Enter Your New Address</AlertDialogTitle>
                       <AlertDialogDescription>
-                        <form action="sumbit" className="flex flex-col gap-4">
+                        <form action="submit" className="flex flex-col gap-4">
                           <div className="flex flex-col gap-2">
                             <Label htmlFor="title">Address title</Label>
                             <input
@@ -368,6 +317,7 @@ const Page = () => {
             )}
           </div>
         )}
+
         {step === "step2" && (
           <div className="w-full flex flex-col gap-6">
             <h1 className="font-bold text-[20px] mb-4">Shipment Method</h1>
@@ -375,7 +325,12 @@ const Page = () => {
             <RadioGroup
               defaultValue={defaultShippingMethod}
               className="flex flex-col gap-[16px] text-[16px]"
-              onValueChange={(val) => setSelectedShip(val)}
+              onValueChange={(val) => {
+                const parsed = parseInt(val, 10);
+                if (!isNaN(parsed)) {
+                  setSelectedShip(parsed);
+                }
+              }}
             >
               {shippingOptionsMock.map((ship) => (
                 <div
@@ -384,15 +339,10 @@ const Page = () => {
                 >
                   <div className="flex items-center gap-4">
                     <RadioGroupItem value={ship.id} id={`ship-${ship.id}`} />
-                    <Label
-                      htmlFor={`ship-${ship.id}`}
-                      className="flex flex-col gap-2 cursor-pointer"
-                    >
+                    <Label htmlFor={`ship-${ship.id}`} className="flex flex-col gap-2 cursor-pointer">
                       <div className="flex gap-3 items-center text-[16px]">
                         <h1 className="font-semibold">{ship.name}</h1>
-                        <span className="text-gray-500">
-                          {ship.description}
-                        </span>
+                        <span className="text-gray-500">{ship.description}</span>
                       </div>
                     </Label>
                   </div>
@@ -409,16 +359,13 @@ const Page = () => {
                           <ChevronDownIcon className="ml-2 h-4 w-4" />
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent
-                        className="w-auto overflow-hidden p-0"
-                        align="start"
-                      >
+                      <PopoverContent className="w-auto overflow-hidden p-0" align="start">
                         <Calendar
                           mode="single"
                           selected={date}
                           captionLayout="dropdown"
-                          onSelect={(date) => {
-                            setDate(date);
+                          onSelect={(d) => {
+                            setDate(d);
                             setOpen(false);
                           }}
                         />
@@ -432,6 +379,7 @@ const Page = () => {
             </RadioGroup>
           </div>
         )}
+
         {step === "step3" && (
           <div className="flex justify-between w-full">
             <div className="border flex flex-col px-[24px] py-[32px] rounded-md gap-6">
@@ -439,13 +387,13 @@ const Page = () => {
 
               <ScrollArea className="h-[300px] rounded-md w-[464px]">
                 <div className="p-4 flex flex-col gap-5">
-                  {tags.map((tag, i) => (
+                  {items.map((tag, i) => (
                     <React.Fragment key={i}>
                       <div className="flex justify-between items-center bg-[#F6F6F6] p-4 rounded-md h-[72px]">
                         <div className="flex items-center gap-4">
                           <div className="w-[40px] h-[50px] flex-shrink-0">
                             <Image
-                              src={tag.img}
+                              src={tag.thumbnail}
                               alt={tag.title}
                               width={30}
                               height={30}
@@ -454,7 +402,7 @@ const Page = () => {
                           </div>
 
                           <h1 className="text-[14px] font-medium max-w-[220px]">
-                            {tag.title}
+                            {tag.title} {`(${tag.quantity})`}
                           </h1>
                         </div>
                         <h1 className="font-bold">${tag.price}</h1>
@@ -466,61 +414,53 @@ const Page = () => {
 
               <div className="flex flex-col gap-3">
                 <div className="text-semibold flex flex-col gap-2">
-                  <h1 className="text-[14px] text-[#545454] font-semibold">
-                    Address
-                  </h1>
+                  <h1 className="text-[14px] text-[#545454] font-semibold">Address</h1>
                   <h1 className="text-[16px] font-semibold">
-                    {address[selectedAdress - 1].address}
+                    {address[selectedAddress - 1]?.address}
                   </h1>
                 </div>
                 <div className="text-semibold flex flex-col gap-2">
-                  <h1 className="text-[14px] text-[#545454] font-semibold">
-                    Shipment Method
-                  </h1>
+                  <h1 className="text-[14px] text-[#545454] font-semibold">Shipment Method</h1>
                   <h1 className="text-[16px] font-semibold">
-                    {shippingOptionsMock[selectedShip - 1].name}
+                    {shippingOptionsMock[selectedShip - 1]?.name}
                   </h1>
                 </div>
               </div>
 
               <div className="flex flex-col gap-4">
                 <div className="flex justify-between font-semibold">
-                  <h1 className=" text-[16px]">Subtotal</h1>
-                  <h1>$Subtotal</h1>
+                  <h1 className="text-[16px]">Subtotal</h1>
+                  <h1>${total.toFixed(2)}</h1>
                 </div>
 
                 <div className="flex flex-col gap-2">
                   <div className="flex justify-between font-semibold">
                     <h1 className="text-[#545454]">Estimated Tax</h1>
-                    <h1>$50</h1>
+                    <h1>$50.00</h1>
                   </div>
                   <div className="flex justify-between font-semibold">
-                    <h1 className="text-[#545454]">
-                      Estimated shipping & Handling
-                    </h1>
-                    <h1>$29</h1>
+                    <h1 className="text-[#545454]">Estimated shipping & Handling</h1>
+                    <h1>$29.00</h1>
                   </div>
                 </div>
 
                 <div className="flex justify-between">
                   <h1 className="font-semibold">Total</h1>
-                  <h1 className="font-bold">$Total</h1>
+                  <h1 className="font-bold">${(total + 79).toFixed(2)}</h1>
                 </div>
               </div>
             </div>
 
-            <div className=" flex flex-col gap-[40px] w-[500px]">
+            <div className="flex flex-col gap-[40px] w-[500px]">
               <div className="flex flex-col gap-[24px]">
                 <h1 className="text-[20px] font-bold">Payment</h1>
                 <div className="flex gap-[56px] text-[14px] font-semibold">
-                  {PaymentMethods.slice(0, 4).map((method: any) => (
+                  {PaymentMethods.map((method) => (
                     <button
                       key={method.id}
                       onClick={() => setSelectedPMethod(method.type)}
                       className={
-                        selectedPMethod === method.type
-                          ? "border-b-2 border-black"
-                          : "border-b-2 border-white"
+                        selectedPMethod === method.type ? "border-b-2 border-black" : "border-b-2 border-white"
                       }
                     >
                       {method.title}
@@ -591,9 +531,7 @@ const Page = () => {
 
                     <DialogContent className="flex flex-col items-center justify-center space-y-6">
                       <DialogHeader>
-                        <DialogTitle className="text-center text-[20px] font-semibold">
-                          Enter SMS Code
-                        </DialogTitle>
+                        <DialogTitle className="text-center text-[20px] font-semibold">Enter SMS Code</DialogTitle>
                       </DialogHeader>
 
                       <InputOTP
@@ -606,35 +544,17 @@ const Page = () => {
                         className="w-full text-[20px]"
                       >
                         <InputOTPGroup>
-                          <InputOTPSlot
-                            className="w-[60px] h-[60px] text-[20px] font-bold"
-                            index={0}
-                          />
-                          <InputOTPSlot
-                            className="w-[60px] h-[60px] text-[20px] font-bold"
-                            index={1}
-                          />
-                          <InputOTPSlot
-                            className="w-[60px] h-[60px] text-[20px] font-bold"
-                            index={2}
-                          />
+                          <InputOTPSlot className="w-[60px] h-[60px] text-[20px] font-bold" index={0} />
+                          <InputOTPSlot className="w-[60px] h-[60px] text-[20px] font-bold" index={1} />
+                          <InputOTPSlot className="w-[60px] h-[60px] text-[20px] font-bold" index={2} />
                         </InputOTPGroup>
 
                         <InputOTPSeparator />
 
                         <InputOTPGroup>
-                          <InputOTPSlot
-                            className="w-[60px] h-[60px] text-[20px] font-bold"
-                            index={3}
-                          />
-                          <InputOTPSlot
-                            className="w-[60px] h-[60px] text-[20px] font-bold"
-                            index={4}
-                          />
-                          <InputOTPSlot
-                            className="w-[60px] h-[60px] text-[20px] font-bold"
-                            index={5}
-                          />
+                          <InputOTPSlot className="w-[60px] h-[60px] text-[20px] font-bold" index={3} />
+                          <InputOTPSlot className="w-[60px] h-[60px] text-[20px] font-bold" index={4} />
+                          <InputOTPSlot className="w-[60px] h-[60px] text-[20px] font-bold" index={5} />
                         </InputOTPGroup>
                       </InputOTP>
 
@@ -650,7 +570,6 @@ const Page = () => {
                         >
                           Cancel
                         </button>
-
                         <button
                           onClick={handleConfirm}
                           className="px-[30px] py-[10px] border rounded-md text-white bg-green-500 cursor-pointer"
@@ -666,6 +585,7 @@ const Page = () => {
           </div>
         )}
       </div>
+
       {step !== "step3" && (
         <div className="flex justify-end items-center py-[48px] px-[160px] gap-[24px]">
           <button
@@ -692,4 +612,5 @@ const Page = () => {
     </div>
   );
 };
+
 export default Page;

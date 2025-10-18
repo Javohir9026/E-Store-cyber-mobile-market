@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+
 export default function Blog() {
   const posts = [
     {
@@ -41,7 +43,7 @@ export default function Blog() {
               key={post.id}
               className="bg-white rounded-xl shadow-md hover:shadow-lg transition overflow-hidden"
             >
-              <img
+              <Image
                 src={post.image}
                 alt={post.title}
                 className="w-full h-48 object-cover"

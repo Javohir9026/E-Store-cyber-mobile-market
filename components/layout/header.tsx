@@ -1,11 +1,11 @@
 "use client";
-import { Heart, Search, ShoppingCart, User } from "lucide-react";
+import { Heart, ShoppingCart, User } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import logo from "@/assets/icon/Logo (1).svg";
+import logo from "../../assets/icon/Logo (1).svg"
 import { useEffect, useState } from "react";
-import { getFromLocalStorage } from "@/utils/LocalStorage";
+import { getFromLocalStorage } from "../../utils/LocalStorage";
 import SearchModal from "../SearchModal";
 
 const Header = () => {

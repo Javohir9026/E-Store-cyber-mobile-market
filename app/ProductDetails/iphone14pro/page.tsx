@@ -1,35 +1,20 @@
 "use client";
-import React from "react";
-import AppleMain from "@/assets/image/apple14Details/apple14proDeatilmain.png";
-import FrontApple from "@/assets/image/apple14Details/frontapple.png";
-import BehindAPple from "@/assets/image/apple14Details/behindApple.png";
-import Apple3D from "@/assets/image/apple14Details/3dapple.png";
+import React, { useState } from "react";
+import AppleMain from "../../../assets/image/apple14Details/apple14proDeatilmain.png";
+import FrontApple from "../../../assets/image/apple14Details/frontapple.png";
+import BehindAPple from "../../../assets/image/apple14Details/behindApple.png";
+import Apple3D from "../../../assets/image/apple14Details/3dapple.png";
 import Image from "next/image";
-import { useEffect, useState } from "react";
 import { BadgeCheck, BadgeMinus, Star, Store, Truck } from "lucide-react";
-const page = () => {
-  const [selectedImg, setSelectedImg] = useState(AppleMain);
-  interface ProductType {
-    id: number;
-    title: string;
-    price: number;
-    discountPercentage: number;
-    tags: string[];
-    category: string;
-    rating: number;
-    stock: number;
-    brand: string;
-    thumbnail: any;
-    images: [];
-  }
 
+const Page = () => {
   const ProductData = [
     {
       id: 1,
       title: "Apple iPhone 14 Pro Max",
       price: "$1499",
       description:
-        "Enhanced capabilities thanks toan enlarged display of 6.7 inchesand work without rechargingthroughout the day. Incredible photosas in weak, yesand in bright lightusing the new systemwith two cameras more...",
+        "Enhanced capabilities thanks to an enlarged display of 6.7 inches and work without recharging throughout the day. Incredible photos as in weak, yes and in bright light using the new system with two cameras more...",
       discountPrice: "$1399",
       colors: ["red", "yellow", "orange", "blue"],
       tags: ["Phone", "MobilePhone", "Apple"],
@@ -40,17 +25,20 @@ const page = () => {
       thumbnail: AppleMain,
       delivery: "1-2",
       images: [AppleMain, FrontApple, BehindAPple, Apple3D],
-      guaranted: 5
+      guaranteed: 5,  // nomini to'g'irlash mumkin
     },
   ];
+
+  // State qo'shildi: boshlang'ich rasm birinchi rasm
+  const [selectedImg, setSelectedImg] = useState(ProductData[0].images[0]);
   const [selectedColor, setSelectedColor] = useState(ProductData[0].colors[0]);
 
   return (
-    <div className="">
+    <div>
       {/* {Main details} */}
-      <div className="flex  gap-[48px] px-[160px] py-[112px] justify-between">
+      <div className="flex gap-[48px] px-[160px] py-[112px] justify-between">
         {/* {Left images} */}
-        <div className=" flex gap-[30px] h-[516px] w-[536px]">
+        <div className="flex gap-[30px] h-[516px] w-[536px]">
           <div className="flex flex-col gap-[24px] justify-center items-center">
             {ProductData[0].images.map((img, i) => (
               <div key={i}>
@@ -61,9 +49,7 @@ const page = () => {
                     width={75}
                     height={95}
                     className={`object-cover transition-all duration-300 ${
-                      selectedImg === img
-                        ? "scale-110 opacity-100"
-                        : "opacity-40"
+                      selectedImg === img ? "scale-110 opacity-100" : "opacity-40"
                     }`}
                   />
                 </button>
@@ -81,7 +67,7 @@ const page = () => {
           </div>
         </div>
         {/* {right texts} */}
-        <div className=" w-[540px] gap-4">
+        <div className="w-[540px] gap-4">
           <div className="flex flex-col gap-6">
             <h1 className="flex font-bold text-[40px] text-center">
               {ProductData[0].title}
@@ -105,13 +91,12 @@ const page = () => {
                     key={i}
                     className={
                       selectedColor === c
-                        ? "rounded-full w-[30px] h-[30px] border-3"
+                        ? "rounded-full w-[30px] h-[30px] border-3 border-black"
                         : "rounded-full w-[30px] h-[30px]"
                     }
                     style={{ background: c }}
-                  >
-                    {" "}
-                  </button>
+                    aria-label={`Select color ${c}`}
+                  />
                 ))}
               </div>
             </div>
@@ -140,14 +125,12 @@ const page = () => {
             </div>
             <div className="flex gap-2">
               <h1 className="flex gap-2 items-center">
-                Stock:{" "}
-                {ProductData[0].stock} pcs
+                Stock: {ProductData[0].stock} pcs
                 {ProductData[0].stock > 0 ? (
                   <BadgeCheck height={15} width={15} className="fill-green-500" />
                 ) : (
                   <BadgeMinus height={15} width={15} className="fill-red-500" />
                 )}{" "}
-                
               </h1>
             </div>
             <div>
@@ -160,12 +143,12 @@ const page = () => {
                 Add to Wishlist
               </button>
               <button className="px-[72px] w-[260px] py-[17px] cursor-pointer bg-black text-white rounded-md">
-                Add to Card
+                Add to Cart
               </button>
             </div>
             <div className="flex gap-[32px] items-center mt-[32px]">
               <div className="w-[160px] flex gap-2 items-center">
-                <div className=" bg-[#F6F6F6] px-4 py-4 rounded-md w-[56px]">
+                <div className="bg-[#F6F6F6] px-4 py-4 rounded-md w-[56px]">
                   <Truck width={24} height={24} />
                 </div>
                 <div className="flex flex-col text-[14px]">
@@ -174,7 +157,7 @@ const page = () => {
                 </div>
               </div>
               <div className="w-[160px] flex gap-2 items-center">
-                <div className=" bg-[#F6F6F6] px-4 py-4 rounded-md w-[56px]">
+                <div className="bg-[#F6F6F6] px-4 py-4 rounded-md w-[56px]">
                   <Store width={24} height={24} />
                 </div>
                 <div className="flex flex-col text-[14px]">
@@ -183,12 +166,12 @@ const page = () => {
                 </div>
               </div>
               <div className="w-[160px] flex gap-2 items-center">
-                <div className=" bg-[#F6F6F6] px-4 py-4 rounded-md w-[56px]">
+                <div className="bg-[#F6F6F6] px-4 py-4 rounded-md w-[56px]">
                   <BadgeCheck width={24} height={24} />
                 </div>
                 <div className="flex flex-col text-[14px]">
                   <h1 className="text-[#717171]">Guaranteed</h1>
-                  <h1>{ProductData[0].guaranted} Year</h1>
+                  <h1>{ProductData[0].guaranteed} Year</h1>
                 </div>
               </div>
             </div>
@@ -199,4 +182,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default Page;

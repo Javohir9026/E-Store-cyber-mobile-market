@@ -1,8 +1,8 @@
 import React from "react";
-import PopularProduct from "@/assets/image/PopularProducts.png";
-import IpadPro from "@/assets/image/IpadPro.png";
-import SamsungGallaxy from "@/assets/image/SamsungGallaxy.png";
-import MackbookAir from "@/assets/image/MackboockAir.png";
+import PopularProduct from "../assets/image/PopularProducts.png";
+import IpadPro from "../assets/image/IpadPro.png";
+import SamsungGallaxy from "../assets/image/SamsungGallaxy.png";
+import MackbookAir from "../assets/image/MackboockAir.png";
 import Image from "next/image";
 
 const MiddleBanner = () => {

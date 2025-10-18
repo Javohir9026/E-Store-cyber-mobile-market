@@ -24,7 +24,7 @@ export default function ContactUs() {
 
           <div className="bg-white p-6 rounded-xl shadow-md hover:shadow-lg transition">
             <h3 className="text-lg font-semibold text-gray-800">Manzil</h3>
-            <p className="text-gray-600 mt-2">Xorazm, Urganch, Najot Ta'lim</p>
+            <p className="text-gray-600 mt-2">Xorazm, Urganch, Najot Talim</p>
           </div>
         </div>
 

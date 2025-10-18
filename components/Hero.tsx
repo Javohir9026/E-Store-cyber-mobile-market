@@ -1,10 +1,10 @@
 import Image from "next/image";
 import React from "react";
-import HeroIphone from "@/assets/image/Iphone Image.png";
-import Playstation from "@/assets/image/PlayStation.png";
-import appleAirPods from "@/assets/image/AirPodsMax.png";
-import AppleVisionPro from "@/assets/image/AppleVisionPro.png";
-import MackBookAir from "@/assets/image/MackboockAir.png";
+import HeroIphone from "../assets/image/Iphone Image.png";
+import Playstation from "../assets/image/PlayStation.png";
+import appleAirPods from "../assets/image/AirPodsMax.png";
+import AppleVisionPro from "../assets/image/AppleVisionPro.png";
+import MackBookAir from "../assets/image/MackboockAir.png";
 import Link from "next/link";
 
 const Hero = () => {

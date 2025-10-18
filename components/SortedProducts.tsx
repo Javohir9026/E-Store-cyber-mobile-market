@@ -3,7 +3,7 @@ import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { saveToLocalStorage, getFromLocalStorage } from "@/utils/LocalStorage";
+import { saveToLocalStorage, getFromLocalStorage } from "../utils/LocalStorage";
 import { toast } from "react-toastify";
 
 type Product = {
@@ -12,7 +12,7 @@ type Product = {
   price: number;
   rating: number;
   thumbnail: string;
-  quantity: number;
+  quantity?: number; // quantity faqat cart uchun kerak, optional
 };
 
 export default function PopularProducts() {
@@ -24,17 +24,33 @@ export default function PopularProducts() {
   const [favorites, setFavorites] = useState<Product[]>([]);
   const [cart, setCart] = useState<Product[]>([]);
 
+  // Fetch products once on mount
   useEffect(() => {
     const fetchProducts = async () => {
-      const res = await fetch("https://dummyjson.com/products");
-      const data = await res.json();
-      setAllProducts(data.products);
+      try {
+        const res = await fetch("https://dummyjson.com/products");
+        const data = await res.json();
+        setAllProducts(data.products);
+      } catch (error) {
+        console.error("Failed to fetch products", error);
+      }
     };
     fetchProducts();
   }, []);
 
+  // Load favorites and cart once on mount
+  useEffect(() => {
+    const storedFav = getFromLocalStorage<Product[]>("favorites");
+    const storedCart = getFromLocalStorage<Product[]>("cart");
+
+    if (storedFav) setFavorites(storedFav);
+    if (storedCart) setCart(storedCart);
+  }, []);
+
+  // Update filtered products whenever filter or allProducts changes
   useEffect(() => {
     if (allProducts.length === 0) return;
+
     let filtered: Product[] = [];
 
     if (filter === "arrival") {
@@ -45,18 +61,12 @@ export default function PopularProducts() {
       filtered = [...allProducts].sort((a, b) => b.price - a.price).slice(0, 8);
     }
 
-    const storedFav = getFromLocalStorage("favorites");
-    const storedCart = getFromLocalStorage("cart");
-
-    if (storedFav) setFavorites(storedFav);
-    if (storedCart) setCart(storedCart);
-
     setProducts(filtered);
   }, [filter, allProducts]);
 
   const handleFavorite = (product: Product) => {
     const exists = favorites.some((f) => f.id === product.id);
-    let updated;
+    let updated: Product[];
 
     if (exists) {
       updated = favorites.filter((f) => f.id !== product.id);
@@ -70,13 +80,13 @@ export default function PopularProducts() {
 
   const handleCart = (product: Product) => {
     const exists = cart.some((c) => c.id === product.id);
-    let updated;
+    let updated: Product[];
 
     if (exists) {
       updated = cart.filter((c) => c.id !== product.id);
       toast.info("Product removed from cart");
     } else {
-      updated = [...cart, { ...product, quantity: 1}];
+      updated = [...cart, { ...product, quantity: 1 }];
       toast.success("Product successfully added");
     }
 

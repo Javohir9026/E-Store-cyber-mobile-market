@@ -1,10 +1,10 @@
 "use client";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
+import { ScrollArea } from "../../components/ui/scroll-area";
+import { Separator } from "../../components/ui/separator";
 import React, { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { getFromLocalStorage, saveToLocalStorage } from "@/utils/LocalStorage";
+import { getFromLocalStorage, saveToLocalStorage } from "../../utils/LocalStorage";
 import { Trash } from "lucide-react";
 
 type CartItem = {
@@ -20,7 +20,8 @@ const Page = () => {
   const [CardNumber, setCardNumber] = useState("");
 
   useEffect(() => {
-    const stored = getFromLocalStorage("cart");
+    // Tip bilan aniq chaqirish:
+    const stored = getFromLocalStorage<CartItem[]>("cart");
     if (stored) setItems(stored);
   }, []);
 
@@ -183,9 +184,7 @@ const Page = () => {
                   <h1 className="font-semibold">$50</h1>
                 </div>
                 <div className="text-[16px] flex justify-between">
-                  <h1 className="text-[#545454] ">
-                    Estimated shipping & Handling
-                  </h1>
+                  <h1 className="text-[#545454] ">Estimated shipping & Handling</h1>
                   <h1 className="font-semibold">$29</h1>
                 </div>
               </div>

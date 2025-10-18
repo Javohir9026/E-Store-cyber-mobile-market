@@ -1,10 +1,10 @@
 import React from "react";
-import Logo from "@/assets/image/Logo.png";
+import Logo from "../../assets/image/Logo.png";
 import Image from "next/image";
-import Twitter from "@/assets/icon/twitter-svgrepo-com.svg";
-import Facebook from "@/assets/icon/facebook-svgrepo-com.svg";
-import TikTok from "@/assets/icon/tiktok-svgrepo-com.svg";
-import Instagram from "@/assets/icon/instagram-svgrepo-com.svg";
+import Twitter from "../../assets/icon/twitter-svgrepo-com.svg";
+import Facebook from "../../assets/icon/facebook-svgrepo-com.svg";
+import TikTok from "../../assets/icon/tiktok-svgrepo-com.svg";
+import Instagram from "../../assets/icon/instagram-svgrepo-com.svg";
 import Link from "next/link";
 const Footer = () => {
   return (

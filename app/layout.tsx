@@ -1,7 +1,7 @@
-import Header from "@/components/layout/header";
 import "./globals.css";
-import Footer from "@/components/layout/Footer";
-import { ToastContainer, toast } from "react-toastify";
+import { ToastContainer } from "react-toastify";
+import Footer from "components/layout/Footer";
+import Header from "components/layout/header";
 
 export default function RootLayout({
   children,

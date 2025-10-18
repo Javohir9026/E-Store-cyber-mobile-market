@@ -1,5 +1,5 @@
 import React from "react";
-import BannerIMg from "@/assets/image/FootBanner.png";
+import BannerIMg from "../assets/image/FootBanner.png";
 import Image from "next/image";
 import Link from "next/link";
 
