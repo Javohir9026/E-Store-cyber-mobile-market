@@ -14,8 +14,9 @@ export default function RootLayout({
         <header>
           <Header />
         </header>
-        <main>{children}
-          <ToastContainer/>
+        <main>
+          {children}
+          <ToastContainer />
         </main>
         <footer>
           <Footer />

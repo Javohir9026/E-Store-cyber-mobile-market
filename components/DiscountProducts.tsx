@@ -111,24 +111,25 @@ const DiscountProducts = () => {
               </button>
             </div>
             <Link href={`/ProductDetails/${product.id}`}>
-              <a>
-                <div className="flex mx-[54px] my-4 items-center justify-center">
-                  <Image
-                    src={product.thumbnail}
-                    width={160}
-                    height={160}
-                    alt={product.title}
-                    className="w-full h-[250px] object-cover"
-                  />
-                </div>
-                <div className="flex flex-col justify-center items-center">
-                  <h2 className="text-lg font-semibold text-[16px] line-clamp-2 h-11">
-                    {product.title}
-                  </h2>
-                  <p className="text-[24px] font-bold">${Math.round(product.price)}</p>
-                </div>
-              </a>
+              <div className="flex mx-[54px] my-4 items-center justify-center cursor-pointer">
+                <Image
+                  src={product.thumbnail}
+                  width={160}
+                  height={160}
+                  alt={product.title}
+                  className="w-full h-[250px] object-cover"
+                />
+              </div>
+              <div className="flex flex-col justify-center items-center cursor-pointer">
+                <h2 className="text-lg font-semibold text-[16px] line-clamp-2 h-11">
+                  {product.title}
+                </h2>
+                <p className="text-[24px] font-bold">
+                  ${Math.round(product.price)}
+                </p>
+              </div>
             </Link>
+
             <div className="flex justify-center items-center mt-5">
               <button
                 onClick={() => handleCart(product)}
@@ -137,7 +138,9 @@ const DiscountProducts = () => {
                     ? "bg-white text-black border-black hover:bg-black hover:text-white"
                     : "bg-black text-white border-transparent hover:bg-white hover:border-black hover:text-black"
                 }`}
-                aria-label={isInCart(product.id) ? "Remove from cart" : "Add to cart"}
+                aria-label={
+                  isInCart(product.id) ? "Remove from cart" : "Add to cart"
+                }
               >
                 {isInCart(product.id) ? "Remove from cart" : "Add to Cart"}
               </button>
